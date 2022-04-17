@@ -21,7 +21,7 @@ class InterpreterTest {
     void itAcceptsNotMoreThanOneParameter() throws Exception {
         var result = catchSystemExit(() -> {
             var args = new String[]{"a", "b"};
-            this.interpreter.run(args);
+            this.interpreter.execute(args);
         });
 
         assertThat(result).isEqualTo(64);

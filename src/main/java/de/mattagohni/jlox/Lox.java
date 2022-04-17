@@ -6,6 +6,6 @@ public class Lox {
 
     public static void main(String[] args) throws IOException {
         var interpreter = new Interpreter();
-        interpreter.run(args);
+        interpreter.execute(args);
     }
 }
