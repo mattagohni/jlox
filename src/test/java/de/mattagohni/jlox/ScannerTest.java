@@ -1,22 +1,24 @@
 package de.mattagohni.jlox;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScannerTest {
-    @Test
-    @DisplayName("it returns lines of given file")
-    void itReturnsLinesOfGivenFile() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        var bytes = Files.readAllBytes(Paths.get("src", "test", "resources", "scanner", "testInput.txt"));
-         var scanner = new Scanner(new String(bytes));
+    @ParameterizedTest(name = "it recognizes {0}")
+    @ValueSource(
+            strings = {
+                "(", ")", "{", "}", ",", ".", "-",
+                "+", ";", "/", "*",
+            }
+    )
+    void itRecognizesSingleCharacterTokens(String input) throws IOException {
+        var scanner = new Scanner(input);
 
-         assertThat(scanner.scanTokens().length).isEqualTo(4);
+        assertThat(scanner.scanTokens().size()).isEqualTo(2); // The actual token + the EOF-token
     }
 }
