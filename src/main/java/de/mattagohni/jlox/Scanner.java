@@ -30,20 +30,18 @@ public class Scanner {
     private void scanToken() {
         char c = advance();
         switch (c) {
-            case '(': addToken(TokenType.LEFT_PAREN); break;
-            case ')': addToken(TokenType.RIGHT_PAREN); break;
-            case '{': addToken(TokenType.LEFT_BRACE); break;
-            case '}': addToken(TokenType.RIGHT_BRACE); break;
-            case ',': addToken(TokenType.COMMA); break;
-            case '.': addToken(TokenType.DOT); break;
-            case '-': addToken(TokenType.MINUS); break;
-            case '+': addToken(TokenType.PLUS); break;
-            case ';': addToken(TokenType.SEMICOLON); break;
-            case '/': addToken(TokenType.SLASH); break;
-            case '*': addToken(TokenType.STAR); break;
-            default:
-                Interpreter.error(line, "Unexpected Character.");
-                break;
+            case '(' -> addToken(TokenType.LEFT_PAREN);
+            case ')' -> addToken(TokenType.RIGHT_PAREN);
+            case '{' -> addToken(TokenType.LEFT_BRACE);
+            case '}' -> addToken(TokenType.RIGHT_BRACE);
+            case ',' -> addToken(TokenType.COMMA);
+            case '.' -> addToken(TokenType.DOT);
+            case '-' -> addToken(TokenType.MINUS);
+            case '+' -> addToken(TokenType.PLUS);
+            case ';' -> addToken(TokenType.SEMICOLON);
+            case '/' -> addToken(TokenType.SLASH);
+            case '*' -> addToken(TokenType.STAR);
+            default -> Interpreter.error(line, "Unexpected Character.");
         }
     }
 
