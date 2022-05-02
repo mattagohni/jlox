@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Interpreter {
+    private static boolean hadError = false;
+
     public void execute(String[] args) throws IOException {
         if(args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -22,6 +24,9 @@ public class Interpreter {
     private void runFile(String pathToFile) throws IOException {
         var bytes = Files.readAllBytes(Paths.get(pathToFile));
         run(new String(bytes, Charset.defaultCharset()));
+        if (hadError) {
+            System.exit(65);
+        }
     }
 
     private void runPrompt() throws IOException {
@@ -35,6 +40,7 @@ public class Interpreter {
                 break;
             }
             run(line);
+            hadError = false;
         }
     }
 
@@ -45,5 +51,14 @@ public class Interpreter {
         for(var token : tokens) {
             System.out.println(token);
         }
+    }
+
+    static void error(int line, String message) {
+        report(line, "", message);
+    }
+
+    private static void report(int line, String where, String message) {
+        System.err.println("[line " + line + "] Error" + where + ": " + message);
+        hadError = true;
     }
 }
