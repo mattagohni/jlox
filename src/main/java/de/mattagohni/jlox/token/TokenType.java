@@ -1,4 +1,4 @@
-package de.mattagohni.jlox;
+package de.mattagohni.jlox.token;
 
 public enum TokenType {
     // SingleChar-Tokens
