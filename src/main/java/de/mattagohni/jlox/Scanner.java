@@ -57,8 +57,32 @@ public class Scanner {
 
             case ' ', '\r', '\t' -> {}
             case '\n' -> line++;
-            default -> Interpreter.error(line, "Unexpected Character.");
+            default -> {
+                if (isDigit(c)) {
+                    number();
+                } else {
+                    Interpreter.error(line, "Unexpected Character.");
+                }
+            }
         }
+    }
+
+    private void number() {
+        while(isDigit(peek())) {
+            advance();
+        }
+
+        if (peek() == '.' && isDigit(peekNext())) {
+            advance();
+            while (isDigit(peek())) {
+                advance();
+            }
+        }
+
+        addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
+    }
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 
     private void string() {
@@ -113,5 +137,12 @@ public class Scanner {
             return '\0';
         }
         return source.charAt(current);
+    }
+
+    private char peekNext() {
+        if (current + 1 >= source.length()) {
+            return '\0';
+        }
+        return source.charAt(current + 1);
     }
 }

@@ -61,4 +61,21 @@ class ScannerTest {
         assertThat(token.getLexeme()).isEqualTo("\"das ist ein ziemlich langer string\nmit einem Umbruch mittendrin\"");
         assertThat(token.getLiteral()).isEqualTo("das ist ein ziemlich langer string\nmit einem Umbruch mittendrin");
     }
+
+    @ParameterizedTest(name = "it recognizes numbers - {0}")
+    @ValueSource(
+            strings = {
+                    "1", "4711", "13.12", "1002387"
+            }
+    )
+    void itRecognizesNumbers(String input) {
+        var scanner = new Scanner(input);
+
+        var result = scanner.scanTokens().get(0);
+
+        assertThat(result.getType()).isEqualTo(TokenType.NUMBER);
+        assertThat(result.getLine()).isEqualTo(1);
+        assertThat(result.getLexeme()).isEqualTo(input);
+        assertThat(result.getLiteral()).isEqualTo(Double.parseDouble(input));
+    }
 }
