@@ -19,4 +19,16 @@ class ScannerTest {
 
         assertThat(scanner.scanTokens().size()).isEqualTo(2); // The actual token + the EOF-token
     }
+
+    @ParameterizedTest(name = "it ignores whitespace")
+    @ValueSource(
+            strings = {
+                    " ", "\t", "\r", "\n"
+            }
+    )
+    void itIgnoresValues(String input) {
+        var scanner = new Scanner(input);
+
+        assertThat(scanner.scanTokens().size()).isEqualTo(1); // Only the EOF-token
+    }
 }
