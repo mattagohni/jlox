@@ -41,8 +41,24 @@ public class Scanner {
             case ';' -> addToken(TokenType.SEMICOLON);
             case '/' -> addToken(TokenType.SLASH);
             case '*' -> addToken(TokenType.STAR);
+            case '!' -> addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+            case '=' -> addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
+            case '<' -> addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+            case '>' -> addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
             default -> Interpreter.error(line, "Unexpected Character.");
         }
+    }
+
+    private boolean match(char needle) {
+        if (isAtEnd()) {
+            return false;
+        }
+        if (source.charAt(current) != needle) {
+            return false;
+        }
+
+        current++;
+        return true;
     }
 
     private void addToken(TokenType type) {
