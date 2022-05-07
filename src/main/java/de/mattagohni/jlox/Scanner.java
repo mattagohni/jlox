@@ -53,10 +53,30 @@ public class Scanner {
             case '=' -> addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
             case '<' -> addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
             case '>' -> addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
+            case '"' -> string();
+
             case ' ', '\r', '\t' -> {}
             case '\n' -> line++;
             default -> Interpreter.error(line, "Unexpected Character.");
         }
+    }
+
+    private void string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') {
+                line++;
+            }
+            advance();
+        }
+
+        if (isAtEnd()) {
+            Interpreter.error(line, "Unterminated String");
+        }
+
+        advance();
+
+        var stringToken = source.substring(start + 1, current -1);
+        addToken(TokenType.STRING, stringToken);
     }
 
     private void addToken(TokenType type) {

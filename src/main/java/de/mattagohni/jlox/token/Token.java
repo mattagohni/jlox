@@ -1,5 +1,8 @@
 package de.mattagohni.jlox.token;
 
+import lombok.Data;
+
+@Data
 public class Token {
     final TokenType type;
     final String lexeme;
