@@ -39,7 +39,15 @@ public class Scanner {
             case '-' -> addToken(TokenType.MINUS);
             case '+' -> addToken(TokenType.PLUS);
             case ';' -> addToken(TokenType.SEMICOLON);
-            case '/' -> addToken(TokenType.SLASH);
+            case '/' -> {
+                if (match('/')) {
+                    while(peek() != '\n' && !isAtEnd()) {
+                        advance();
+                    }
+                } else {
+                    addToken(TokenType.SLASH);
+                }
+            }
             case '*' -> addToken(TokenType.STAR);
             case '!' -> addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
             case '=' -> addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
@@ -47,18 +55,6 @@ public class Scanner {
             case '>' -> addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
             default -> Interpreter.error(line, "Unexpected Character.");
         }
-    }
-
-    private boolean match(char needle) {
-        if (isAtEnd()) {
-            return false;
-        }
-        if (source.charAt(current) != needle) {
-            return false;
-        }
-
-        current++;
-        return true;
     }
 
     private void addToken(TokenType type) {
@@ -76,5 +72,24 @@ public class Scanner {
 
     private boolean isAtEnd() {
         return current >= source.length();
+    }
+
+    private boolean match(char needle) {
+        if (isAtEnd()) {
+            return false;
+        }
+        if (source.charAt(current) != needle) {
+            return false;
+        }
+
+        current++;
+        return true;
+    }
+
+    private char peek() {
+        if (isAtEnd()) {
+            return '\0';
+        }
+        return source.charAt(current);
     }
 }
