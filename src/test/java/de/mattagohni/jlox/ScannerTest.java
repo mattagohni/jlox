@@ -78,4 +78,21 @@ class ScannerTest {
         assertThat(result.getLexeme()).isEqualTo(input);
         assertThat(result.getLiteral()).isEqualTo(Double.parseDouble(input));
     }
+
+    @ParameterizedTest(name = "it recognizes itentifiers - {0}")
+    @ValueSource(
+            strings = {
+                    "myIdentifier", "_myIdentifier", "my1d3ntify3r"
+            }
+    )
+    void itRecognizesIdentifiers(String input) {
+        var scanner = new Scanner(input);
+
+        var result = scanner.scanTokens().get(0);
+
+        assertThat(result.getType()).isEqualTo(TokenType.IDENTIFIER);
+        assertThat(result.getLine()).isEqualTo(1);
+        assertThat(result.getLexeme()).isEqualTo(input);
+        assertThat(result.getLiteral()).isEqualTo(null);
+    }
 }

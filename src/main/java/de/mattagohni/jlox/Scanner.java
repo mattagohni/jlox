@@ -60,11 +60,21 @@ public class Scanner {
             default -> {
                 if (isDigit(c)) {
                     number();
+                } else if (isAlpha(c)) {
+                    identifier();
+
                 } else {
                     Interpreter.error(line, "Unexpected Character.");
                 }
             }
         }
+    }
+
+    private void identifier() {
+        while(isAlphaNumeric(peek())) {
+            advance();
+        }
+        addToken(TokenType.IDENTIFIER);
     }
 
     private void number() {
@@ -80,9 +90,6 @@ public class Scanner {
         }
 
         addToken(TokenType.NUMBER, Double.parseDouble(source.substring(start, current)));
-    }
-    private boolean isDigit(char c) {
-        return c >= '0' && c <= '9';
     }
 
     private void string() {
@@ -130,6 +137,18 @@ public class Scanner {
 
         current++;
         return true;
+    }
+
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
+    }
+
+    private boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
     }
 
     private char peek() {
